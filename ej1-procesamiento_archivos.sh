@@ -5,7 +5,11 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-absoluta_archivo=$(find "$(pwd)" -name "$1" -print -quit)
+absoluta_archivo=$(find "$(pwd)" -wholename "$1" -print -quit)
+
+if [ -z "$absoluta_archivo" ]; then
+	absoluta_archivo=$(find "$(pwd)" -name "$1" -print -quit 2>/dev/null) 
+fi
 
 if [ -n "$absoluta_archivo" ]; then
   # Verificar si el archivo es regular y tiene permisos de lectura
@@ -27,4 +31,3 @@ else
   echo "El archivo $1 no existe, por favor ingrese un archivo regular válido."
   exit 1
 fi
-
