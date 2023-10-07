@@ -31,3 +31,7 @@ else
   echo "El archivo $1 no existe, por favor ingrese un archivo regular válido."
   exit 1
 fi
+
+total_ventas=wc -l $absoluta_archivo
+
+echo "El total de ventas es: $total_ventas"
