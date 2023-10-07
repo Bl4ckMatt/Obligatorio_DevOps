@@ -8,7 +8,7 @@ fi
 absoluta_archivo=$(find "$(pwd)" -wholename "$1" -print -quit)
 
 if [ -z "$absoluta_archivo" ]; then
-	absoluta_archivo=$(find "$(pwd)" -name "$1" -print -quit 2>/dev/null) 
+  absoluta_archivo=$(find "$(pwd)" -name "$1" -print -quit 2>/dev/null) 
 fi
 
 if [ -n "$absoluta_archivo" ]; then
