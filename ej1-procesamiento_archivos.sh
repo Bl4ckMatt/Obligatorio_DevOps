@@ -69,36 +69,27 @@ lineas_no_validas=()
 
 if $verificar_sintaxis; then
   total_resultado=0
-  while read -r linea; do
-    #Reemplazar puntos por comas en la línea, para que bash logre realizar la operación.
-    
+  while read -r linea; do   
     if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
         ventas_realizadas=$((ventas_realizadas + 1))  	
-
 	precio=${BASH_REMATCH[1]}
   	porcentaje=${BASH_REMATCH[2]}
-      
 	resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
 	total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
-
     else
-
-	    verificar_error=true
-            lineas_no_validas+=("$linea") 
+	verificar_error=true
+        lineas_no_validas+=("$linea") 
     fi
   done < $absoluta_archivo
 fi
 
 if $verificar_error; then
-   echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:"
-
+	echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:"
 	for linea in "${lineas_no_validas[@]}"; do
         	echo "$linea"
  	done
-exit 1
+	exit 1
 fi
-
-
 
 echo "Se realizaron $ventas_realizadas ventas de artículos."
 echo "Total: $total_resultado"
