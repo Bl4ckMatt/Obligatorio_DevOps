@@ -1,5 +1,13 @@
 #!/bin/bash
 
+mostrar_ayuda() {
+    echo "Uso: $0 [-3] [-t] archivo"
+    echo "  -3    Verificar la sintaxis de las líneas del archivo"
+    echo "  -t    Mostrar el total de ventas"
+    echo "  archivo   Archivo que contiene los nombres de las imágenes"
+    exit 1
+}
+
 if [ $# -eq 0 ]; then
   echo "Uso: $0 [-3] [-t] archivo"
   exit 1
