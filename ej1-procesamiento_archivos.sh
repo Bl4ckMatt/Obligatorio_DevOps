@@ -41,7 +41,7 @@ else
 fi
 
 verificar_sintaxis=false
-verificar_error=true
+verificar_error=false
 mostrar_total=false
 lineas_no_validas=()
 
