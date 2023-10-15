@@ -32,6 +32,42 @@ else
   exit 1
 fi
 
+verificar_sintaxis=false
+verificar_error=true
+mostrar_total=false
+lineas_no_validas=()
+
+while getopts "3t" opcion; do
+    case "${opcion}" in
+        3)
+            verificar_sintaxis=true
+            ;;
+        t)
+            mostrar_total=true
+            ;;
+        *)
+            mostrar_ayuda
+            ;;
+    esac
+done
+
+if $verificar_sintaxis; then
+  while read -r linea; do
+    if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[[0-9]+\.[0-9]{2}-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+            ventas_realizadas=$((ventas_realizadas + 1))
+    else
+            verificar_error=true
+            lineas_no_validas+=("$linea") 
+    fi
+  done < $absoluta_archivo
+
+  if $verificar_error; then
+    echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:”
+    for linea in "${lineas_no_validas[@]}"; do
+        echo "$linea"
+    done
+    exit 1
+  fi
 total_ventas=wc -l $absoluta_archivo
 
 echo "El total de ventas es: $total_ventas"
