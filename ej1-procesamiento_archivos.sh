@@ -68,15 +68,15 @@ if $verificar_sintaxis; then
             lineas_no_validas+=("$linea") 
     fi
   done < $absoluta_archivo
+fi
 
-  if $verificar_error; then
-   	echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:"
-    
+if $verificar_error; then
+   echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:"
+
 	for linea in "${lineas_no_validas[@]}"; do
         	echo "$linea"
  	done
 
     exit 1
 
-  fi
 fi
