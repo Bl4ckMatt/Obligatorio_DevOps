@@ -64,11 +64,8 @@ fi
 
 lineas_no_validas=()
 
-echo "$verificar_sintaxis"
-
 if $verificar_sintaxis; then
   while read -r linea; do
-    echo "$linea"
     if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[[0-9]+\.[0-9]{2}-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
             ventas_realizadas=$((ventas_realizadas + 1))
     else
