@@ -47,7 +47,7 @@ lineas_no_validas=()
 
 
 
-while getopts "3t" opcion; do
+while getopts ":3t" opcion; do
     case "${opcion}" in
         3)
             verificar_sintaxis=true
