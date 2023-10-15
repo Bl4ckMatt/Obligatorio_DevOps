@@ -72,6 +72,6 @@ if $verificar_sintaxis; then
 
   fi
 
-total_ventas=wc -l $absoluta_archivo
+total_ventas="wc -l $absoluta_archivo"
 
 echo "El total de ventas es: $total_ventas"
