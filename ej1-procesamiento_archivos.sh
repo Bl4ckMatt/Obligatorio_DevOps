@@ -17,6 +17,7 @@ archivo=""
 verificar_sintaxis=false
 verificar_error=false
 mostrar_total=false
+ventas_realizadas=0
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -26,10 +27,10 @@ while [[ $# -gt 0 ]]; do
         -t)
             mostrar_total=true
             ;;
-	-h)
- 	    mostrar_ayuda
-      	    ;;
-        *)
+        -h)
+	    mostrar_ayuda
+	    ;;
+	*)
             # Si no es una opción de línea de comandos, asumimos que es el archivo
             archivo="$1"
             ;;
@@ -64,14 +65,24 @@ else
   exit 1
 fi
 
-
 lineas_no_validas=()
 
 if $verificar_sintaxis; then
+  total_resultado=0
   while read -r linea; do
-    if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[[0-9]+\.[0-9]{2}-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
-            ventas_realizadas=$((ventas_realizadas + 1))
+    #Reemplazar puntos por comas en la línea, para que bash logre realizar la operación.
+    
+    if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+        ventas_realizadas=$((ventas_realizadas + 1))  	
+
+	precio=${BASH_REMATCH[1]}
+  	porcentaje=${BASH_REMATCH[2]}
+      
+	resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
+	total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
+
     else
+
 	    verificar_error=true
             lineas_no_validas+=("$linea") 
     fi
@@ -84,7 +95,10 @@ if $verificar_error; then
 	for linea in "${lineas_no_validas[@]}"; do
         	echo "$linea"
  	done
-
-    exit 1
-
+exit 1
 fi
+
+
+
+echo "Se realizaron $ventas_realizadas ventas de artículos."
+echo "Total: $total_resultado"
