@@ -26,6 +26,9 @@ while [[ $# -gt 0 ]]; do
         -t)
             mostrar_total=true
             ;;
+	-h)
+ 	    mostrar_ayuda
+      	    ;;
         *)
             # Si no es una opción de línea de comandos, asumimos que es el archivo
             archivo="$1"
