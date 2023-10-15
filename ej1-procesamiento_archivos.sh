@@ -13,10 +13,28 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-absoluta_archivo=$(find "$(pwd)" -wholename "$1" -print -quit)
+archivo=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -3)
+            verificar_sintaxis=true
+            ;;
+        -t)
+            mostrar_total=true
+            ;;
+        *)
+            # Si no es una opción de línea de comandos, asumimos que es el archivo
+            archivo="$1"
+            ;;
+    esac
+    shift
+done
+
+absoluta_archivo=$(find "$(pwd)" -wholename "$archivo" -print -quit)
 
 if [ -z "$absoluta_archivo" ]; then
-  absoluta_archivo=$(find "$(pwd)" -name "$1" -print -quit 2>/dev/null) 
+  absoluta_archivo=$(find "$(pwd)" -name "$archivo" -print -quit 2>/dev/null) 
 fi
 
 if [ -n "$absoluta_archivo" ]; then
