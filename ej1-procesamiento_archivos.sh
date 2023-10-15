@@ -63,22 +63,6 @@ verificar_error=false
 mostrar_total=false
 lineas_no_validas=()
 
-
-
-while getopts ":3t" opcion; do
-    case "${opcion}" in
-        3)
-            verificar_sintaxis=true
-            ;;
-        t)
-            mostrar_total=true
-            ;;
-        *)
-            mostrar_ayuda
-            ;;
-    esac
-done
-
 echo "$verificar_sintaxis"
 
 if $verificar_sintaxis; then
