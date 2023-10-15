@@ -14,6 +14,9 @@ if [ $# -eq 0 ]; then
 fi
 
 archivo=""
+verificar_sintaxis=false
+verificar_error=false
+mostrar_total=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -58,9 +61,7 @@ else
   exit 1
 fi
 
-verificar_sintaxis=false
-verificar_error=false
-mostrar_total=false
+
 lineas_no_validas=()
 
 echo "$verificar_sintaxis"
