@@ -8,7 +8,7 @@ mostrar_ayuda() {
     exit 10
 }
 
-if  [ $# -eq 1 ] | | [ $# -eq 2 ] | | [ $# -eq 3 ]; then
+if ! [ $# -eq 1 ] | | ! [ $# -eq 2 ] | | ! [ $# -eq 3 ]; then
   echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo 
 regular accesible."
   exit 4
