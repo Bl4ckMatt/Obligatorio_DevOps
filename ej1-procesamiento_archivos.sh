@@ -5,14 +5,13 @@ mostrar_ayuda() {
     echo "  -3    Verificar la sintaxis de las líneas del archivo"
     echo "  -t    Mostrar el total de ventas"
     echo "  archivo   Archivo que contiene los nombres de las imágenes"
-    exit 10
+    exit 7
 }
 
 if ! [ $# -eq 1 ] && ! [ $# -eq 2 ] && ! [ $# -eq 3 ]; then
   echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo regular accesible."
   exit 4
 fi
-
 archivo=""
 verificar_sintaxis=false
 verificar_error=false
@@ -30,11 +29,15 @@ while [[ $# -gt 0 ]]; do
         -h)
 	    mostrar_ayuda
 	    ;;
-	*)
-            # Si no es una opción de línea de comandos, asumimos que es el archivo
-            archivo="$1"
+     	*)
+            if [[ "$1" != -* ]]; then
+               archivo="$1"
+            else
+                echo "Modificador $1 inexistente, solo se aceptan -3 y -t, y en ese orden en caso de estar ambos presentes."
+                exit 5
+            fi
             ;;
-    esac
+	esac
     shift
 done
 
