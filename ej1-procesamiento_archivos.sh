@@ -5,12 +5,13 @@ mostrar_ayuda() {
     echo "  -3    Verificar la sintaxis de las líneas del archivo"
     echo "  -t    Mostrar el total de ventas"
     echo "  archivo   Archivo que contiene los nombres de las imágenes"
-    exit 1
+    exit 10
 }
 
-if [ $# -eq 0 ]; then
-  echo "Uso: $0 [-3] [-t] archivo"
-  exit 1
+if  [ $# -eq 1 ] | | [ $# -eq 2 ] | | [ $# -eq 3 ]; then
+  echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo 
+regular accesible."
+  exit 4
 fi
 
 archivo=""
@@ -84,12 +85,20 @@ if $verificar_sintaxis; then
 fi
 
 if $verificar_error; then
-	echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:"
+	echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:" >&2
 	for linea in "${lineas_no_validas[@]}"; do
-        	echo "$linea"
+        	echo "$linea" >&2
  	done
-	exit 1
+	exit 6
 fi
+
+ while read -r linea; do   
+    if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+        ventas_realizadas=$((ventas_realizadas + 1))  	
+	precio=${BASH_REMATCH[1]}
+  	porcentaje=${BASH_REMATCH[2]}
+	resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
+	total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
 
 echo "Se realizaron $ventas_realizadas ventas de artículos."
 echo "Total: $total_resultado"
