@@ -56,12 +56,12 @@ if [ -n "$absoluta_archivo" ]; then
       exit 3
     fi
   else
-    echo "Ruta absoluta del archivo: $absoluta_archivo"
-    echo "El parámetro $absoluta_archivo no es un archivo regular válido, sino otro tipo de archivo."
+    echo "Ruta absoluta del archivo: "$absoluta_archivo""
+    echo "El parámetro "$absoluta_archivo" no es un archivo regular válido, sino otro tipo de archivo."
     exit 2
   fi
 else
-  echo "El archivo $1 no existe, por favor ingrese un archivo regular válido."
+  echo "El archivo "$archivo" no existe, por favor ingrese un archivo regular válido."
   exit 1
 fi
 
