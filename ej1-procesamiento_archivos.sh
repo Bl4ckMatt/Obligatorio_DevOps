@@ -106,13 +106,7 @@ fi
 if $mostrar_total; then
 	ventas_realizadas=0
 	while read -r linea; do   
-		if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
-			ventas_realizadas=$((ventas_realizadas + 1))  	
-			precio=${BASH_REMATCH[1]}
-  			porcentaje=${BASH_REMATCH[2]}
-			resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
-			total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
-    		else
+		if ! [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 			verificar_error=true
 		        lineas_no_validas+=("$linea") 
     		fi
