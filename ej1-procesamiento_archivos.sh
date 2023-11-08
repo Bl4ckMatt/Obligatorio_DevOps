@@ -120,8 +120,6 @@ if [ $ventas_realizadas = 0 ]; then
 	exit 0
 fi
 
-if 
-
 echo "Las lineas correctas son: "
 for linea in "${lineas_validas[@]}"; do
 	echo "$linea"
