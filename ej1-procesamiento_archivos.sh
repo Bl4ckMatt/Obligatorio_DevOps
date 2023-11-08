@@ -17,6 +17,9 @@ verificar_sintaxis=false
 verificar_error=false
 mostrar_total=false
 ventas_realizadas=0
+total_resultado=0
+lineas_validas=()
+lineas_no_validas=()
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -68,22 +71,28 @@ else
   exit 1
 fi
 
-lineas_no_validas=()
+while read -r linea; do   
+	if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+		ventas_realizadas=$((ventas_realizadas + 1))  	
+		precio=${BASH_REMATCH[1]}
+		porcentaje=${BASH_REMATCH[2]}
+		resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
+		total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
+		 lineas_validas+=("$linea") 
+ 	fi
+done < $absoluta_archivo
 
+ 
 if $verificar_sintaxis; then
-  total_resultado=0
-  while read -r linea; do   
-    if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
-        ventas_realizadas=$((ventas_realizadas + 1))  	
-	precio=${BASH_REMATCH[1]}
-  	porcentaje=${BASH_REMATCH[2]}
-	resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
-	total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
-    else
-	verificar_error=true
-        lineas_no_validas+=("$linea") 
-    fi
-  done < $absoluta_archivo
+	while read -r linea; do   
+ 		if ! [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+   			verificar_error=true
+     			lineas_no_validas+=("$linea") 
+		
+  		else
+    			ventas_realizadas=$((ventas_realizadas + 1))
+       		fi
+  	done < $absoluta_archivo
 fi
 
 if $verificar_error; then
@@ -94,10 +103,38 @@ if $verificar_error; then
 	exit 6
 fi
 
+if $mostrar_total; then
+	ventas_realizadas=0
+	while read -r linea; do   
+		if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+			ventas_realizadas=$((ventas_realizadas + 1))  	
+			precio=${BASH_REMATCH[1]}
+  			porcentaje=${BASH_REMATCH[2]}
+			resultado=$(bc <<< "scale=2; $precio * 1.$porcentaje")
+			total_resultado=$(bc <<< "scale=2; $total_resultado + $resultado")
+    		else
+			verificar_error=true
+		        lineas_no_validas+=("$linea") 
+    		fi
+  	done < $absoluta_archivo
+   	for linea in "${lineas_no_validas[@]}"; do
+        	echo "$linea" >&2
+ 	done
+fi
+
 if [ $ventas_realizadas = 0 ]; then
 	echo "No hay registros de imágenes en el archivo "$absoluta_archivo" pasado como parámetro." >&2
 	exit 0
 fi
+
+if 
+
+echo "Las lineas correctas son: "
+for linea in "${lineas_validas[@]}"; do
+	echo "$linea"
+done
+
 echo "Se realizaron "$ventas_realizadas" ventas de artículos."
 echo "Total: "$total_resultado""
+
 exit 0
