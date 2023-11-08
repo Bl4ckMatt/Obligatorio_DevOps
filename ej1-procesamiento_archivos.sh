@@ -104,7 +104,6 @@ if $verificar_error; then
 fi
 
 if $mostrar_total; then
-	ventas_realizadas=0
 	while read -r linea; do   
 		if ! [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 			verificar_error=true
