@@ -110,6 +110,7 @@ if $mostrar_total; then
 		        lineas_no_validas+=("$linea") 
     		fi
   	done < $absoluta_archivo
+   	echo "Las lineas incorrectas son: "
    	for linea in "${lineas_no_validas[@]}"; do
         	echo "$linea" >&2
  	done
