@@ -96,3 +96,4 @@ fi
 
 echo "Se realizaron $ventas_realizadas ventas de artículos."
 echo "Total: $total_resultado"
+exit 0
