@@ -1,15 +1,15 @@
 #!/bin/bash
 
 mostrar_ayuda() {
-    echo "Uso: $0 [-3] [-t] archivo"
-    echo "  -3    Verificar la sintaxis de las líneas del archivo"
-    echo "  -t    Mostrar el total de ventas"
-    echo "  archivo   Archivo que contiene los nombres de las imágenes"
+    echo "Uso: "$0" [-3] [-t] archivo" >&2
+    echo "  -3    Verificar la sintaxis de las líneas del archivo" >&2
+    echo "  -t    Mostrar el total de ventas" >&2
+    echo "  archivo   Archivo que contiene los nombres de las imágenes" >&2
     exit 7
 }
 
 if ! [ $# -eq 1 ] && ! [ $# -eq 2 ] && ! [ $# -eq 3 ]; then
-  echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo regular accesible."
+  echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo regular accesible." >&2
   exit 4
 fi
 archivo=""
@@ -33,7 +33,7 @@ while [[ $# -gt 0 ]]; do
             if [[ "$1" != -* ]]; then
                archivo="$1"
             else
-                echo "Modificador $1 inexistente, solo se aceptan -3 y -t, y en ese orden en caso de estar ambos presentes."
+                echo "Modificador "$1" inexistente, solo se aceptan -3 y -t, y en ese orden en caso de estar ambos presentes." >&2
                 exit 5
             fi
             ;;
@@ -50,21 +50,21 @@ fi
 if [ -n "$absoluta_archivo" ]; then
   # Verificar si el archivo es regular y tiene permisos de lectura
   if [ -f "$absoluta_archivo" ]; then
-    echo "Ruta absoluta del archivo: $absoluta_archivo"
+    echo "Ruta absoluta del archivo: "$absoluta_archivo""
     echo "El archivo es regular"
     if [ -r "$absoluta_archivo" ]; then
       echo "El archivo tiene permisos de lectura."
     else
-      echo "No se tienen los permisos necesarios para acceder al archivo $absoluta_archivo"
+      echo "No se tienen los permisos necesarios para acceder al archivo "$absoluta_archivo"" >&2
       exit 3
     fi
   else
     echo "Ruta absoluta del archivo: "$absoluta_archivo""
-    echo "El parámetro "$absoluta_archivo" no es un archivo regular válido, sino otro tipo de archivo."
+    echo "El parámetro "$absoluta_archivo" no es un archivo regular válido, sino otro tipo de archivo." >&2
     exit 2
   fi
 else
-  echo "El archivo "$archivo" no existe, por favor ingrese un archivo regular válido."
+  echo "El archivo "$archivo" no existe, por favor ingrese un archivo regular válido." >&2
   exit 1
 fi
 
@@ -94,6 +94,10 @@ if $verificar_error; then
 	exit 6
 fi
 
-echo "Se realizaron $ventas_realizadas ventas de artículos."
-echo "Total: $total_resultado"
+if [ $ventas_realizadas = 0 ]; then
+	echo "No hay registros de imágenes en el archivo "$absoluta_archivo" pasado como parámetro." >&2
+	exit 0
+fi
+echo "Se realizaron "$ventas_realizadas" ventas de artículos."
+echo "Total: "$total_resultado""
 exit 0
