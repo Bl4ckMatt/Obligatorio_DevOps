@@ -18,17 +18,25 @@ if not (2 <= len(sys.argv) <= 5):
     sys.exit(20)
 
 # Crear el directorio si se proporciona y es relativo o no existe
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
     directorio = sys.argv[-1]
 
-    # Convertir el directorio a una ruta absoluta
-    directorio_absoluto = os.path.abspath(directorio)
+    # Verificar si el directorio es una ruta absoluta
+    if os.path.isabs(directorio):
+        try:
+            os.makedirs(directorio, exist_ok=True)
+        except OSError as e:
+            print(f"Error: No se pudo crear el directorio en la ruta absoluta proporcionada. {e}")
+            sys.exit(12)
+    else:
+        # Convertir el directorio a una ruta absoluta
+        directorio_absoluto = os.path.abspath(directorio)
 
-    # Verificar si el directorio existe y si es una ruta relativa
-    if not os.path.exists(directorio_absoluto) or not os.path.isabs(directorio):
-        print(f"El directorio '{directorio_absoluto}' no existe o es una ruta relativa.")
-        print("Creando el directorio en el directorio corriente.")
-        os.makedirs(directorio_absoluto, exist_ok=True)
+        # Verificar si el directorio existe y si es una ruta relativa
+        if not os.path.exists(directorio_absoluto):
+            print(f"El directorio '{directorio_absoluto}' no existe.")
+            print("Creando el directorio en el directorio corriente.")
+            os.makedirs(directorio_absoluto, exist_ok=True)
 
 
 
