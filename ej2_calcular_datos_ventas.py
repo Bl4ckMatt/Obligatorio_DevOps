@@ -7,6 +7,10 @@ def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
     print("ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino")
 
+if "-h" in sys.argv:
+    mostrar_sintaxis()
+    sys.exit(0)
+
 # Verificar la cantidad de argumentos, siendo minimo 2 (archivo y directorio) y maximo 5 (se suman -3, -t y -e)
 if not (2 <= len(sys.argv) <= 5):
     print("Error: Cantidad incorrecta de argumentos.")
