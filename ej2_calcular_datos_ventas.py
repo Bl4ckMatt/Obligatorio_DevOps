@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import re
 
 def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
@@ -36,6 +37,18 @@ for arg in sys.argv[1:]:
         mostrar_sintaxis()
         sys.exit(20)
 
+# Verificamos si se proporciono el argumento -e, y en caso de que si, tomamos la expresion regular que le sigue al parametro.
+if "-e" in sys.argv:
+    indice_e = sys.argv.index("-e")
+    expresion_regular = sys.argv[indice_e + 1]
+
+    try:
+        re.compile(expresion_regular)
+    except re.error:
+        print("Error: La expresión regular proporcionada no es válida.")
+        sys.exit(20)
+
+
 
 # Nos quedamos solo con los argumentos que necesitamos para el script de Bash (-3 y -t)
 argumentos_deseados = []
@@ -43,10 +56,39 @@ for arg in sys.argv[1:]:
     if arg in ["-3", "-t"]:
         argumentos_deseados.append(arg)
 
+# Obtener el contenido del archivo y aplicar la expresión regular
+if len(sys.argv) > 3:
+    archivo = sys.argv[-2]
+
+    # Leer el contenido del archivo
+    try:
+        with open(archivo, 'r') as file:
+            contenido = file.read()
+    except FileNotFoundError:
+        print(f"Error: El archivo '{archivo}' no existe.")
+        sys.exit(20)
+
+    # Aplicar la expresión regular y guardar el contenido filtrado en un archivo temporal en /tmp
+    if "-e" in sys.argv:
+        contenido_filtrado = '\n'.join(re.findall(expresion_regular, contenido))
+
+        # Obtener el PID del script de Python
+        pid_script = os.getpid()
+
+        # Crear el nombre del archivo en /tmp con el PID
+        archivo_tmp = f'/tmp/contenido_filtrado_{pid_script}.txt'
+
+        try:
+            with open(archivo_tmp, 'w') as file_tmp:
+                file_tmp.write(contenido_filtrado)
+        except IOError as e:
+            print(f"Error: No se pudo crear el archivo en /tmp. {e}")
+            sys.exit(12)
+
 ruta_script_bash = "./ej1-procesamiento_archivos.sh"
 
 # Construir la lista de argumentos para el script de Bash
-argumentos_bash = ["bash", ruta_script_bash] + argumentos_deseados
+argumentos_bash = ["bash", ruta_script_bash] + argumentos_deseados + [archivo_tmp]
 
 # Ejecutar el script de Bash desde Python con redirección de salida y error
 try:
@@ -63,3 +105,12 @@ except subprocess.CalledProcessError as e:
 # Si no hay errores, imprimir la salida estándar y continuar
 salida_estandar = resultado.stdout
 print(f"Salida estándar:\n{salida_estandar}")
+
+# Borrar el archivo temporal
+try:
+    os.remove(archivo_tmp)
+except OSError as e:
+    print(f"Error: No se pudo borrar el archivo temporal {archivo_tmp}. {e}")
+    sys.exit(12)
+
+
