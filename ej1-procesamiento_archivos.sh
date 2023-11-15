@@ -50,6 +50,10 @@ if [ -z "$absoluta_archivo" ]; then
   absoluta_archivo=$(find "$(pwd)" -name "$archivo" -print -quit 2>/dev/null) 
 fi
 
+if [ -z "$absoluta_archivo" ]; then
+  absoluta_archivo=$(find /tmp -name "$archivo" -print -quit 2>/dev/null)
+fi
+
 if [ -n "$absoluta_archivo" ]; then
   # Verificar si el archivo es regular y tiene permisos de lectura
   if [ -f "$absoluta_archivo" ]; then
