@@ -18,38 +18,15 @@ parser.add_argument("directorio", help="Descripción del directorio")
 
 args = parser.parse_args()
 
-if args.e:
-    try:
-        re.compile(args.e)
-    except re.error:
-        print("Error: La expresión regular proporcionada no es válida.")
-        sys.exit(20)
-
-# Verificar y crear el directorio
-if os.path.isabs(args.directorio):
-    try:
-        os.makedirs(args.directorio, exist_ok=True)
-    except OSError as e:
-        print(f"Error: No se pudo crear el directorio en la ruta absoluta proporcionada. {e}")
-        sys.exit(12)
-else:
-    directorio_absoluto = os.path.abspath(args.directorio)
-    if not os.path.exists(directorio_absoluto):
-        print(f"El directorio '{directorio_absoluto}' no existe.")
-        print("Creando el directorio en el directorio corriente.")
-        os.makedirs(directorio_absoluto, exist_ok=True)
-
 # Convertir la ruta del archivo a absoluta si es relativa
 archivo_absoluto = os.path.abspath(args.archivo)
 
-argumentos_deseados = ["-3", "-t"]
-
 # Construir la lista de argumentos para el script de Bash
-argumentos_bash = ["bash", "./ej1-procesamiento_archivos.sh"] + argumentos_deseados + [args.archivo]
+argumentos_bash = ["bash", "./ej1-procesamiento_archivos.sh"]
 
 if args.e:
     contenido = ""
-    with open(args.archivo, 'r') as file:
+    with open(archivo_absoluto, 'r') as file:
         contenido = file.read()
     
     contenido_filtrado = '\n'.join(re.findall(args.e, contenido))
@@ -68,6 +45,30 @@ if args.e:
         sys.exit(12)
 
     argumentos_bash.append(archivo_tmp)
+else:
+    # Agregar la ruta del archivo
+    argumentos_bash.append(args.archivo)
+
+# Verificar y crear el directorio
+if os.path.isabs(args.directorio):
+    try:
+        os.makedirs(args.directorio, exist_ok=True)
+    except OSError as e:
+        print(f"Error: No se pudo crear el directorio en la ruta absoluta proporcionada. {e}")
+        sys.exit(12)
+else:
+    directorio_absoluto = os.path.abspath(args.directorio)
+    if not os.path.exists(directorio_absoluto):
+        print(f"El directorio '{directorio_absoluto}' no existe.")
+        print("Creando el directorio en el directorio corriente.")
+        os.makedirs(directorio_absoluto, exist_ok=True)
+
+# Agregar -3 y -t solo si se especifican en el script de Python
+if args.__dict__["3"]:
+    argumentos_bash.append("-3")
+
+if args.__dict__["t"]:
+    argumentos_bash.append("-t")
 
 # Ejecutar el script de Bash desde Python con redirección de salida y error
 try:
@@ -93,3 +94,4 @@ if args.e:
         sys.exit(12)
 
 sys.exit(resultado.returncode)
+
