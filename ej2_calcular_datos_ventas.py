@@ -39,6 +39,9 @@ else:
         print("Creando el directorio en el directorio corriente.")
         os.makedirs(directorio_absoluto, exist_ok=True)
 
+# Convertir la ruta del archivo a absoluta si es relativa
+archivo_absoluto = os.path.abspath(args.archivo)
+
 argumentos_deseados = ["-3", "-t"]
 
 # Construir la lista de argumentos para el script de Bash
