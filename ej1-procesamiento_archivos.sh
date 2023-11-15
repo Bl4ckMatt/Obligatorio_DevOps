@@ -51,7 +51,7 @@ if [ -z "$absoluta_archivo" ]; then
 fi
 
 if [ -z "$absoluta_archivo" ]; then
-  absoluta_archivo=$(find /tmp -name "$archivo" -print -quit 2>/dev/null)
+  absoluta_archivo=$(find / -wholename "$archivo" -print -quit 2>/dev/null)
 fi
 
 if [ -n "$absoluta_archivo" ]; then
