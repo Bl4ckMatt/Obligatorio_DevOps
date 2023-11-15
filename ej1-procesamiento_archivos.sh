@@ -44,12 +44,14 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-absoluta_archivo=$(find "$(pwd)" -wholename "$archivo" -print -quit)
+# Buscar el archivo en la ruta actual y sus subdirectorios
+absoluta_archivo=$(find "$(pwd)" -wholename "$(pwd)/$archivo" -print -quit)
 
 if [ -z "$absoluta_archivo" ]; then
-  absoluta_archivo=$(find "$(pwd)" -name "$archivo" -print -quit 2>/dev/null) 
+  absoluta_archivo=$(find "$(pwd)" -name "$archivo" -print -quit 2>/dev/null)
 fi
 
+# Si no se encuentra en la ruta actual, buscar en todo el sistema
 if [ -z "$absoluta_archivo" ]; then
   absoluta_archivo=$(find / -wholename "$archivo" -print -quit 2>/dev/null)
 fi
@@ -134,3 +136,4 @@ echo "Se realizaron "$ventas_realizadas" ventas de artículos."
 echo "Total: "$total_resultado""
 
 exit 0
+
