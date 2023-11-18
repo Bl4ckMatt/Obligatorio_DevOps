@@ -3,6 +3,10 @@ import sys
 import os
 import re
 import argparse
+import tensorflow as tf
+import numpy as np
+import cv2
+from tqdm import tqdm
 
 def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
