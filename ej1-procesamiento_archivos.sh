@@ -78,7 +78,7 @@ else
 fi
 
 while read -r linea; do   
-	if [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+	if [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 		ventas_realizadas=$((ventas_realizadas + 1))  	
 		precio=${BASH_REMATCH[1]}
 		porcentaje=${BASH_REMATCH[2]}
@@ -90,8 +90,9 @@ done < $absoluta_archivo
 
  
 if $verificar_sintaxis; then
+	ventas_realizadas=0
 	while read -r linea; do   
- 		if ! [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+ 		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
    			verificar_error=true
      			lineas_no_validas+=("$linea") 
 		
@@ -111,7 +112,7 @@ fi
 
 if $mostrar_total; then
 	while read -r linea; do   
-		if ! [[ "$linea" =~ ^imagenes_ventas/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9]{2})-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 			verificar_error=true
 		        lineas_no_validas+=("$linea") 
     		fi
