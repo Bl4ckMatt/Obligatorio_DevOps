@@ -81,7 +81,7 @@ while read -r linea; do
 	if [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 		ventas_realizadas=$((ventas_realizadas + 1))  	
 		precio=${BASH_REMATCH[1]}
-		total_resultado=$((total_resultado + precio))
+		total_resultado=$(bc <<< "scale=2; $total_resultado + $precio")
 		lineas_validas+=("$linea") 
  	fi
 done < $absoluta_archivo
