@@ -132,7 +132,7 @@ for linea in "${lineas_validas[@]}"; do
 done
 
 echo "Se realizaron "$ventas_realizadas" ventas de artículos."
-echo "Total: "$total_resultado"
+echo "Total: "$total_resultado""
 
 exit 0
 
