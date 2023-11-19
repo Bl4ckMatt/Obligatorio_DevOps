@@ -97,5 +97,25 @@ if args.e:
         print(f"Error: No se pudo borrar el archivo temporal {archivo_tmp}. {e}")
         sys.exit(12)
 
+# Ejecucion IA
+ruta_modelo_ia = "resources/fashion_mnist2.h5"
+LABEL_NAMES = ['t_shirt', 'trouser', 'pullover', 'dress', 'coat', 'sandal', 'shirt', 'sneaker', 'bag', 'ankle_boots']
+modelo = tf.keras.models.load_model(ruta_modelo_ia)
+# modelo_2 = load_model(ruta_modelo_ia)
+dir_destino = "./resources/salida/"
+os.makedirs(dir_destino, exist_ok=True)
+
+# imagen_seleccionada = "01012022_102901_coat4_[4796.89-0].jpg"
+directorio_imagenes = "./resources/imagenes_ventas/"
+for imagen_a_ejecutar in tqdm(os.listdir(directorio_imagenes)):
+    print(f"leyendo la imagen {imagen_a_ejecutar}")
+    imagen_en_memoria = cv2.imread(f"./resources/imagenes_ventas/{imagen_a_ejecutar}", cv2.IMREAD_GRAYSCALE)
+    prediccion = modelo.predict(np.expand_dims(imagen_en_memoria, axis=0))
+    label = LABEL_NAMES[np.argmax(prediccion)]
+    print(f"La clase del objeto de la imagen es {label}")
+    os.makedirs(dir_destino + label, exist_ok=True)
+    cv2.imwrite(dir_destino + label + "/" + imagen_a_ejecutar, imagen_en_memoria)
+
+
 sys.exit(resultado.returncode)
 
