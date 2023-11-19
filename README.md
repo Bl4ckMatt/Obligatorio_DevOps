@@ -8,7 +8,7 @@ Ademas se encuenta la opcion de poder realizar chequeos previos de errores sinta
 Para ejecutar el script de Python sera necesario instalar algunas dependencias, de forma automatica es posible realizarlo con este comando:
 
 ```bash
-pip3 install -r requirements.txt
+pip3 install -r requisitos.txt
 ```
 
 ## Dependencias
