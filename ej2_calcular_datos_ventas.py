@@ -104,7 +104,7 @@ ruta_modelo_ia = "resources/fashion_mnist2.h5"
 LABEL_NAMES = ['t_shirt', 'trouser', 'pullover', 'dress', 'coat', 'sandal', 'shirt', 'sneaker', 'bag', 'ankle_boots']
 modelo = tf.keras.models.load_model(ruta_modelo_ia)
 # modelo_2 = load_model(ruta_modelo_ia)
-dir_destino = os.path.abspath(args.directorio)
+dir_destino = os.path.abspath(args.directorio)+ "/"
 os.makedirs(dir_destino, exist_ok=True)
 
 # imagen_seleccionada = "01012022_102901_coat4_[4796.89-0].jpg"
