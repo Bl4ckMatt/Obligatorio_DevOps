@@ -27,14 +27,19 @@ pip3 install -r requirements.txt
 
 ### Script Bash
 
+```bash
 ej1-procesamiento_archivos.sh [-3] [-t] archivo
+```
+
 [-3]    Verificar la sintaxis de las líneas del archivo
 [-t]    Mostrar el total de ventas
 <archivo>   Archivo que contiene los nombres de las imágenes
 
 ### Script Python
 
+```bash
 ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino
+```
 [-3]    Verifica que el archivo contenga solo ventas CORRECTAS
 [-t]    Desplegara las lineas INCORRECTAS en el archivo
 [-e]    <RExp>   Proporcionar una expresion regular para filtrar el contenido del archivo a analizar
