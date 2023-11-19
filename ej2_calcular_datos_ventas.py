@@ -12,13 +12,13 @@ def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
     print("ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino")
 
-parser = argparse.ArgumentParser(description="Descripción del script")
-parser.add_argument("-3", action="store_true", help="Descripción del argumento -3")
-parser.add_argument("-t", action="store_true", help="Descripción del argumento -t")
-parser.add_argument("-e", metavar="RExp", help="Descripción del argumento -e")
+parser = argparse.ArgumentParser(description="Script utilizado para calcular cantidad y total de ventas y realizar una clasificacion de imagenes por IA")
+parser.add_argument("-3", action="store_true", help="Verifica que el archivo contenga solo ventas CORRECTAS")
+parser.add_argument("-t", action="store_true", help="Desplegara las lineas INCORRECTAS en el archivo")
+parser.add_argument("-e", metavar="RExp", help="Proporcionar una expresion regular para filtrar el contenido del archivo a analizar")
 
-parser.add_argument("archivo", help="Descripción del archivo")
-parser.add_argument("directorio", help="Descripción del directorio")
+parser.add_argument("archivo", help="Archivo log a analizar")
+parser.add_argument("directorio", help="Directorio a utilizar para mover los archivos resultantes")
 
 args = parser.parse_args()
 
