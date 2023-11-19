@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+# Ocultamos las advertencias por drivers y uso del CPU de tensorflow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import re
 import argparse
