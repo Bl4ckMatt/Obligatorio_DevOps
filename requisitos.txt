@@ -1,0 +1,9 @@
+subprocess
+sys
+os
+re
+argparse
+tensorflow
+numpy
+opencv-python
+tqdm
