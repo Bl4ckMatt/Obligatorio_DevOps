@@ -77,10 +77,13 @@ else
   exit 1
 fi
 
+# Leemos el archivo, solo las lineas que cumplan con la expresion regular
 while read -r linea; do   
 	if [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+ 		# Nos quedamos con el segundo "match" de la expresion regular, es decir el precio, para ello utilizamos BASH_REMATCH con el indice 1
 		ventas_realizadas=$((ventas_realizadas + 1))  	
 		precio=${BASH_REMATCH[1]}
+  		# Sumamos los totales y las lineas validas
 		total_resultado=$(bc <<< "scale=2; $total_resultado + $precio")
 		lineas_validas+=("$linea") 
  	fi
