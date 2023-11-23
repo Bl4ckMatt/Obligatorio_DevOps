@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
             verificar_sintaxis=true
             ;;
         -t)
-            mostrar_total=true
+            mostrar_incorrectas=true
             ;;
         -h)
 	    mostrar_ayuda
@@ -85,7 +85,11 @@ while read -r linea; do
 		precio=${BASH_REMATCH[1]}
   		# Sumamos los totales y las lineas validas
 		total_resultado=$(bc <<< "scale=2; $total_resultado + $precio")
-		lineas_validas+=("$linea") 
+  		if [[ $linea =~ imagenes_ventas\/(.+\.(jpg|png|jpeg)) ]]; then
+    			nombre_imagen=${BASH_REMATCH[1]}
+       			lineas_validas+=("$nombre_imagen") 
+		fi
+		
  	fi
 done < $absoluta_archivo
 
@@ -111,7 +115,7 @@ if $verificar_error; then
 	exit 6
 fi
 
-if $mostrar_total; then
+if $mostrar_incorrectas; then
 	while read -r linea; do   
 		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
 			verificar_error=true
