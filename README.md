@@ -32,7 +32,7 @@ ej1-procesamiento_archivos.sh [-3] [-t] archivo
 ```
 
 - [-3]    Verificar la sintaxis de las líneas del archivo
-- [-t]    Mostrar el total de ventas
+- [-t]    Desplegara las lineas INCORRECTAS en el archivo
 - <archivo>   Archivo que contiene los nombres de las imágenes
 
 ### Script Python
