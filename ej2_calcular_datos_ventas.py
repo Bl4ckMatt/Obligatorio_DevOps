@@ -107,16 +107,24 @@ modelo = tf.keras.models.load_model(ruta_modelo_ia)
 dir_destino = os.path.abspath(args.directorio)+ "/"
 os.makedirs(dir_destino, exist_ok=True)
 
+# Diccionario para realizar un seguimiento del recuento de cada clase
+recuento_clases = {label: 0 for label in LABEL_NAMES}
+
 # imagen_seleccionada = "01012022_102901_coat4_[4796.89-0].jpg"
 directorio_imagenes = "./resources/imagenes_ventas/"
 for imagen_a_ejecutar in tqdm(os.listdir(directorio_imagenes)):
-    print(f"leyendo la imagen {imagen_a_ejecutar}")
+    #print(f"leyendo la imagen {imagen_a_ejecutar}")
     imagen_en_memoria = cv2.imread(f"./resources/imagenes_ventas/{imagen_a_ejecutar}", cv2.IMREAD_GRAYSCALE)
     prediccion = modelo.predict(np.expand_dims(imagen_en_memoria, axis=0))
     label = LABEL_NAMES[np.argmax(prediccion)]
-    print(f"La clase del objeto de la imagen es {label}")
+    recuento_clases[label] += 1
+    #print(f"La clase del objeto de la imagen es {label}")
     os.makedirs(dir_destino + label, exist_ok=True)
     cv2.imwrite(dir_destino + label + "/" + imagen_a_ejecutar, imagen_en_memoria)
+
+print("Los totales se comportaron de la siguiente manera:")
+for label, count in recuento_clases.items():
+    print(f" --> {label} : {count}")
 
 
 sys.exit(resultado.returncode)
