@@ -15,7 +15,7 @@ fi
 archivo=""
 verificar_sintaxis=false
 verificar_error=false
-mostrar_total=false
+mostrar_incorrectas=false
 ventas_realizadas=0
 total_resultado=0
 lineas_validas=()
@@ -118,7 +118,6 @@ fi
 if $mostrar_incorrectas; then
 	while read -r linea; do   
 		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
-			verificar_error=true
 		        lineas_no_validas+=("$linea") 
     		fi
   	done < $absoluta_archivo
