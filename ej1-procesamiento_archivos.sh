@@ -8,6 +8,7 @@ mostrar_ayuda() {
     exit 7
 }
 
+# Consultar si la cantidad de argumentos es la correcta
 if ! [ $# -eq 1 ] && ! [ $# -eq 2 ] && ! [ $# -eq 3 ]; then
   echo "Cantidad de parámetros incorrecta, solo se reciben los modificadores -3 o -t y un archivo regular accesible." >&2
   exit 4
@@ -33,7 +34,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -h)
 	    mostrar_ayuda
-	    ;;
+	    ;;g
      	*)
             if [[ "$1" != -* ]]; then
                archivo="$1"
@@ -70,7 +71,6 @@ if [ -n "$absoluta_archivo" ]; then
       exit 3
     fi
   else
-    echo "Ruta absoluta del archivo: "$absoluta_archivo""
     echo "El parámetro "$absoluta_archivo" no es un archivo regular válido, sino otro tipo de archivo." >&2
     exit 2
   fi
@@ -95,7 +95,7 @@ while read -r linea; do
  	fi
 done < $absoluta_archivo
 
- 
+# Corresponde al modificador -3 
 if $verificar_sintaxis; then
 	ventas_realizadas=0
 	while read -r linea; do   
@@ -109,6 +109,7 @@ if $verificar_sintaxis; then
   	done < $absoluta_archivo
 fi
 
+# Si hay por lo menos una linea incorrecta, se interrumpe el script
 if $verificar_error; then
 	echo "El archivo $absoluta_archivo contiene imágenes de ventas incorrectas, por favor ingrese un archivo que contenga solo imágenes correctas o no ingrese el modificador -3 para verificar esa sintaxis. Las líneas que no cumplen con el formato son:" >&2
 	for linea in "${lineas_no_validas[@]}"; do
@@ -117,6 +118,7 @@ if $verificar_error; then
 	exit 6
 fi
 
+# Corresponde al modificador -t
 if $mostrar_incorrectas; then
 	while read -r linea; do   
 		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
