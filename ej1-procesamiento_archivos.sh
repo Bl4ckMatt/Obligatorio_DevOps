@@ -21,6 +21,8 @@ total_resultado=0
 lineas_validas=()
 lineas_no_validas=()
 
+
+# Utilizamos este loop para ir argumento por argumento y en base a la coincidencia ejecutar su funcion correspondiente. Si un argumento no esta presente, realiza un chequeo para ver si el mismo es un archivo
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -3)
