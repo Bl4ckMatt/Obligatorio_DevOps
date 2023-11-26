@@ -1,10 +1,14 @@
+# Para interactuar con el sistema y sus archivos importamos los siguientes modulos
 import subprocess
 import sys
 import os
 # Ocultamos las advertencias por drivers y uso del CPU de tensorflow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# Para manejos de expresiones regulares importamos el modulo re
 import re
+# Para manejo de argumentos importamos el modulo argparse
 import argparse
+# Se importan los siguientes modulos de abajo para la ejecucion de la IA
 import tensorflow as tf
 import numpy as np
 import cv2
@@ -14,11 +18,13 @@ def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
     print("ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino")
 
+# Por defecto argparse, interpreta el argumento -h como la "ayuda" a como se ejecutara el script
 parser = argparse.ArgumentParser(description="Script utilizado para calcular cantidad y total de ventas y realizar una clasificacion de imagenes por IA")
 parser.add_argument("-3", action="store_true", help="Verifica que el archivo contenga solo ventas CORRECTAS")
 parser.add_argument("-t", action="store_true", help="Desplegara las lineas INCORRECTAS en el archivo")
 parser.add_argument("-e", metavar="RExp", help="Proporcionar una expresion regular para filtrar el contenido del archivo a analizar")
 
+# El archivo y directorio deben ir en este orden ya que a priori en linea de comandos no se sabe cual es un archivo o directorio, se analizara despues
 parser.add_argument("archivo", help="Archivo log a analizar")
 parser.add_argument("directorio", help="Directorio a utilizar para mover los archivos resultantes")
 
@@ -30,6 +36,7 @@ archivo_absoluto = os.path.abspath(args.archivo)
 # Construir la lista de argumentos para el script de Bash
 argumentos_bash = ["bash", "./ej1-procesamiento_archivos.sh"]
 
+# Si contamos con el argumento -e, realizamos el filtrado al archivo con la expresion regular proporcionada
 if args.e:
     contenido = ""
     with open(archivo_absoluto, 'r') as file:
@@ -43,6 +50,7 @@ if args.e:
     # Crear el nombre del archivo en /tmp con el PID
     archivo_tmp = f'/tmp/contenido_filtrado_{pid_script}.txt'
 
+    # Controlamos la excepcion por si no es posible crear el archivo
     try:
         with open(archivo_tmp, 'w') as file_tmp:
             file_tmp.write(contenido_filtrado)
@@ -83,8 +91,8 @@ except subprocess.CalledProcessError as e:
     # Capturar el objeto de excepción para acceder al código de retorno y los mensajes de error
     codigo_salida = e.returncode
     mensajes_error = e.stderr
-    print(f"Error: Código de salida {codigo_salida}")
-    print(f"Mensajes de error:\n{mensajes_error}")
+    print(f"Error: Código de salida {codigo_salida}", file=sys.stderr)
+    print(f"Mensajes de error:\n{mensajes_error}", file=sys.stderr)
     sys.exit(codigo_salida)
 
 # Si no hay errores, imprimir la salida estándar y continuar
@@ -103,29 +111,28 @@ if args.e:
 ruta_modelo_ia = "resources/fashion_mnist2.h5"
 LABEL_NAMES = ['t_shirt', 'trouser', 'pullover', 'dress', 'coat', 'sandal', 'shirt', 'sneaker', 'bag', 'ankle_boots']
 modelo = tf.keras.models.load_model(ruta_modelo_ia)
-# modelo_2 = load_model(ruta_modelo_ia)
 dir_destino = os.path.abspath(args.directorio)+ "/"
 os.makedirs(dir_destino, exist_ok=True)
 
 # Diccionario para realizar un seguimiento del recuento de cada clase
 recuento_clases = {label: 0 for label in LABEL_NAMES}
 
-# imagen_seleccionada = "01012022_102901_coat4_[4796.89-0].jpg"
 directorio_imagenes = "./resources/imagenes_ventas/"
 for imagen_a_ejecutar in tqdm(os.listdir(directorio_imagenes)):
-    #print(f"leyendo la imagen {imagen_a_ejecutar}")
     imagen_en_memoria = cv2.imread(f"./resources/imagenes_ventas/{imagen_a_ejecutar}", cv2.IMREAD_GRAYSCALE)
     prediccion = modelo.predict(np.expand_dims(imagen_en_memoria, axis=0))
     label = LABEL_NAMES[np.argmax(prediccion)]
+    # Incrementamos la cantidad de la clase que nos dio la prediccion con su respectiva clave
     recuento_clases[label] += 1
-    #print(f"La clase del objeto de la imagen es {label}")
+    # Creamos el directorio por cada clase, si ya existe no lo vuelve a crear, y movemos la imagen presente a ese directorio
     os.makedirs(dir_destino + label, exist_ok=True)
     cv2.imwrite(dir_destino + label + "/" + imagen_a_ejecutar, imagen_en_memoria)
 
+# Imprimimos la cantidad de ventas por cada clase, para ello realizamos un for que recorra el diccionario mostrando su clave + valor
 print("Los totales se comportaron de la siguiente manera:")
 for label, count in recuento_clases.items():
     print(f" --> {label} : {count}")
 
-
+# Salimos del script con el mismo codigo de salida exitoso de bash
 sys.exit(resultado.returncode)
 
