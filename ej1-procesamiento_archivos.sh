@@ -47,18 +47,13 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-# Buscamos el archivo considerando la ruta completa
-absoluta_archivo=$(find "$(pwd)" -wholename "$archivo" -print -quit 2>/dev/null)
-
-# Si no se encuentra, buscamos solo por el nombre del archivo en el directorio actual
+# Buscamos solo por el nombre del archivo en el directorio actual
 # Utilizamos basename para extraer solo el nombre del archivo, por lo que si $archivo ya es una ruta absoluta, solo se buscará por el nombre.
-if [ -z "$absoluta_archivo" ]; then
-  absoluta_archivo=$(find "$(pwd)" -name "$(basename "$archivo")" -print -quit 2>/dev/null)
-fi
+absoluta_archivo=$(find "$(pwd)" -name "$(basename "$archivo")" -print -quit 2>/dev/null)
 
 # Si aún no se encuentra, buscamos en todo el sistema
 if [ -z "$absoluta_archivo" ]; then
-  absoluta_archivo=$(find / -wholename "$archivo" -print -quit 2>/dev/null)
+  absoluta_archivo=$(find / -name "$(basename "$archivo")" -print -quit 2>/dev/null)
 fi
 
 if [ -n "$absoluta_archivo" ]; then
