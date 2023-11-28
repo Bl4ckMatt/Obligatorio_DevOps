@@ -1,7 +1,5 @@
-subprocess
-sys
-os
-re
+subprocess.run
+regex
 argparse
 tensorflow
 numpy
