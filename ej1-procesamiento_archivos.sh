@@ -92,6 +92,19 @@ while read -r linea; do
  	fi
 done < $absoluta_archivo
 
+# Corresponde al modificador -t
+if $mostrar_incorrectas; then
+	while read -r linea; do   
+		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
+		        lineas_no_validas+=("$linea") 
+    		fi
+  	done < $absoluta_archivo
+   	echo "Las lineas incorrectas son: "
+   	for linea in "${lineas_no_validas[@]}"; do
+        	echo "$linea" >&2
+ 	done
+fi
+
 # Corresponde al modificador -3 
 if $verificar_sintaxis; then
 	ventas_realizadas=0
@@ -115,18 +128,6 @@ if $verificar_error; then
 	exit 6
 fi
 
-# Corresponde al modificador -t
-if $mostrar_incorrectas; then
-	while read -r linea; do   
-		if ! [[ "$linea" =~ ^imagenes_ventas\/[0-9]{8}_[0-9]{6}_[a-zA-Z0-9_]+\[([0-9]+\.[0-9][0-9]?)?-(0|10|22)\]\.(jpg|jpeg|png)$ ]]; then
-		        lineas_no_validas+=("$linea") 
-    		fi
-  	done < $absoluta_archivo
-   	echo "Las lineas incorrectas son: "
-   	for linea in "${lineas_no_validas[@]}"; do
-        	echo "$linea" >&2
- 	done
-fi
 
 if [ $ventas_realizadas = 0 ]; then
 	echo "No hay registros de imágenes en el archivo "$absoluta_archivo" pasado como parámetro." >&2
