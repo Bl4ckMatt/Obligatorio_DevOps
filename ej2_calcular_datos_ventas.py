@@ -42,7 +42,7 @@ if args.e:
     with open(archivo_absoluto, 'r') as file:
         contenido = file.read()
     
-    contenido_filtrado = '\n'.join(re.findall(args.e, contenido))
+    contenido_filtrado = '\n'.join(linea for linea in contenido.split('\n') if re.search(args.e, linea))
     
     # Obtener el PID del script de Python
     pid_script = os.getpid()
