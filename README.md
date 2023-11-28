@@ -13,10 +13,8 @@ pip3 install -r requisitos.txt
 
 ## Dependencias
 
-    subprocess
-    sys
-    os
-    re
+    subprocess.run
+    regex
     argparse
     tensorflow
     numpy
