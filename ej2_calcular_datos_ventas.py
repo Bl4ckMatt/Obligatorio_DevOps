@@ -41,7 +41,8 @@ if args.e:
     contenido = ""
     with open(archivo_absoluto, 'r') as file:
         contenido = file.read()
-    
+    # Utilizamos join para unir las lineas filtradas por "contenido", ademas previamente se utiliza split para separar el contenido por lineas
+    # Utilizamos re.search para validar que la linea cumple con la expresion proporcionada, si cumple se añade a "contenido_filtrado"
     contenido_filtrado = '\n'.join(linea for linea in contenido.split('\n') if re.search(args.e, linea))
     
     # Obtener el PID del script de Python
