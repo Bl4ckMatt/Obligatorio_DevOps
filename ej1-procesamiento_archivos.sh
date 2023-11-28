@@ -34,8 +34,8 @@ while [[ $# -gt 0 ]]; do
             ;;
         -h)
 	    mostrar_ayuda
-	    ;;g
-     	*)
+	    ;;
+     	 *)
             if [[ "$1" != -* ]]; then
                archivo="$1"
             else
