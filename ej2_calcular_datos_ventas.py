@@ -38,7 +38,7 @@ try:
     args = parser.parse_args()
     
     # Convertir la ruta del archivo a absoluta si es relativa
-    archivo_absoluto = os.path.abspath(args.archivo)
+    archivo_absoluto = os.path.abspath(args.file)
     
     # Construir la lista de argumentos para el script de Bash
     argumentos_bash = ["bash", "./ej1-procesamiento_archivos.sh"]
