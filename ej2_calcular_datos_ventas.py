@@ -69,7 +69,7 @@ try:
         argumentos_bash.append(archivo_tmp)
     else:
         # Agregar la ruta del archivo
-        argumentos_bash.append(args.archivo)
+        argumentos_bash.append(args.file)
     
     # Verificar y crear el directorio
     if os.path.isabs(args.directorio):
