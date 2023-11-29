@@ -63,7 +63,7 @@ try:
             with open(archivo_tmp, 'w') as file_tmp:
                 file_tmp.write(contenido_filtrado)
         except IOError as e:
-            print(f"Error: No se pudo crear el archivo en /tmp. {e}")
+            print(f"Error: No se pudo crear el archivo en /tmp. {e}", file=sys.stderr)
             sys.exit(12)
     
         argumentos_bash.append(archivo_tmp)
@@ -76,7 +76,7 @@ try:
         try:
             os.makedirs(args.directorio, exist_ok=True)
         except OSError as e:
-            print(f"Error: No se pudo crear el directorio en la ruta absoluta proporcionada. {e}")
+            print(f"Error: No se pudo crear el directorio en la ruta absoluta proporcionada. {e}", file=sys.stderr)
             sys.exit(12)
     else:
         directorio_absoluto = os.path.abspath(args.directorio)
@@ -112,7 +112,7 @@ try:
         try:
             os.remove(archivo_tmp)
         except OSError as e:
-            print(f"Error: No se pudo borrar el archivo temporal {archivo_tmp}. {e}")
+            print(f"Error: No se pudo borrar el archivo temporal {archivo_tmp}. {e}", file=sys.stderr)
             sys.exit(12)
     
     # Ejecucion IA
