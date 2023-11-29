@@ -143,6 +143,6 @@ try:
     sys.exit(resultado.returncode)
     
 except Exception as e:
-    print("ERROR: Ocurrio un error inesperado en el script", file=sys.stderr)
+    print(f"ERROR: Ocurrió un error inesperado en el script. Detalles: {e}", file=sys.stderr)
     sys.exit(20)
     
