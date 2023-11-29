@@ -36,7 +36,7 @@ ej1-procesamiento_archivos.sh [-3] [-t] archivo
 ### Script Python
 
 ```bash
-ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino
+ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] -f,--file Archivoalgo.log -d,--directorio DirectorioDestino
 ```
 - [-3]    Verifica que el archivo contenga solo ventas CORRECTAS
 - [-t]    Desplegara las lineas INCORRECTAS en el archivo
