@@ -19,7 +19,7 @@ LABEL_NAMES = ['t_shirt', 'trouser', 'pullover', 'dress', 'coat', 'sandal', 'shi
 
 def mostrar_sintaxis():
     print("Descripción resumida de la sintaxis:")
-    print("ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] Archivoalgo.log DirectorioDestino")
+    print("ej2_calcular_datos_ventas.py [-3] [-t] [-e RExp] -f,--file Archivoalgo.log -d,--directorio DirectorioDestino")
 
 try:
     # Colocamos un try catch a todo el codigo de abajo y salida con error 20 si ocurre algun error inesperado en el script
